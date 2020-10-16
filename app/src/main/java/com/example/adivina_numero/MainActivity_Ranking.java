@@ -12,17 +12,27 @@ import java.util.ArrayList;
 
 public class MainActivity_Ranking extends AppCompatActivity {
     static ArrayList<String> arrayNames = new ArrayList<String>();
-    static ArrayList<Integer> arrayNumAttempts = new ArrayList<Integer>();
+    static ArrayList<Integer> arrayScores = new ArrayList<Integer>();
+    static ArrayList<Integer> arrayTimeScores = new ArrayList<Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__ranking);
         TextView tvRanking = findViewById(R.id.tvRanking);
-        arrayNames.add(getIntent().getStringExtra("name"));
-        arrayNumAttempts.add(getIntent().getIntExtra("numAttempts", 0));
 
-        orderArrays(arrayNames, arrayNumAttempts);
+        String name = getIntent().getStringExtra("name");
+        if(name.equals("") || name == null){
+            arrayNames.add("Unknown");
+        }else{
+            arrayNames.add(name);
+        }
+
+        arrayScores.add(getIntent().getIntExtra("score", 0));
+
+        arrayTimeScores.add(getIntent().getIntExtra("timeScore", 0));
+
+        orderArrays(arrayNames, arrayScores, arrayTimeScores);
         printRanking(tvRanking);
 
 
@@ -44,21 +54,24 @@ public class MainActivity_Ranking extends AppCompatActivity {
     public void printRanking(TextView tvRanking){
         String scores = new String();
         for (int i = 0; i<arrayNames.size();i++){
-            scores = scores+"\n"+arrayNames.get(i)+"          "+arrayNumAttempts.get(i);
+            scores = scores+"\n"+arrayNames.get(i)+"          "+arrayScores.get(i)+"       "+arrayTimeScores.get(i);
         }
         tvRanking.setText(scores);
     }
 
-    public void orderArrays(ArrayList<String> arrayNames, ArrayList<Integer> arrayNumAttempts){
-        for(int i = arrayNumAttempts.size()-1; i>=1; i--){
+    public void orderArrays(ArrayList<String> arrayNames, ArrayList<Integer> arrayScores, ArrayList<Integer> arrayTimeScores){
+        for(int i = arrayScores.size()-1; i>=1; i--){
             for(int j = 0; j < i; j++){
-                if(arrayNumAttempts.get(j)>arrayNumAttempts.get(i)){
-                    int numChange = arrayNumAttempts.get(j);
-                    arrayNumAttempts.set(j, arrayNumAttempts.get(i));
-                    arrayNumAttempts.set(i, numChange);
+                if(arrayScores.get(j)>arrayScores.get(i)){
+                    int numChange = arrayScores.get(j);
+                    arrayScores.set(j, arrayScores.get(i));
+                    arrayScores.set(i, numChange);
                     String nameChange = arrayNames.get(j);
                     arrayNames.set(j, arrayNames.get(i));
                     arrayNames.set(i, nameChange);
+                    int timeChange = arrayTimeScores.get(j);
+                    arrayTimeScores.set(j, arrayTimeScores.get(i));
+                    arrayTimeScores.set(i, timeChange);
                 }
             }
         }
