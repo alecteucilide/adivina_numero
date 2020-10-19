@@ -1,5 +1,5 @@
 package com.example.adivina_numero;
-
+//hacer u realease v0.1 con tag = vo.1 -> en github
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class MainActivity_Ranking extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__ranking);
-        TextView tvRanking = findViewById(R.id.tvRanking);
+        TableLayout tlRanking = (TableLayout) findViewById(R.id.tableRanking);
 
         String name = getIntent().getStringExtra("name");
         if(name.equals("") || name == null){
@@ -33,8 +35,14 @@ public class MainActivity_Ranking extends AppCompatActivity {
         arrayTimeScores.add(getIntent().getIntExtra("timeScore", 0));
 
         orderArrays(arrayNames, arrayScores, arrayTimeScores);
-        printRanking(tvRanking);
 
+        TableRow tr1 = new TableRow(this);
+        tr1.setLayoutParams(new TableLayout.LayoutParams( TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        TextView textview = new TextView(this);
+        textview.setText("Name");
+        tr1.addView(textview);
+        tlRanking.addView(tr1, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        //printRanking(tlRanking);
 
         final Button buttonReturn = findViewById(R.id.buttonReturn);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
@@ -51,12 +59,23 @@ public class MainActivity_Ranking extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void printRanking(TextView tvRanking){
-        String scores = new String();
+    public void printRanking(TableLayout tlRanking){
         for (int i = 0; i<arrayNames.size();i++){
-            scores = scores+"\n"+arrayNames.get(i)+"          "+arrayScores.get(i)+"       "+arrayTimeScores.get(i);
+            TableRow row = new TableRow(this);
+            row.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+            TextView tvName = new TextView(this);
+            tvName.setText(arrayNames.get(i));
+            row.addView(tvName);
+            TextView tvScore = new TextView(this);
+            tvScore.setText(arrayScores.get(i));
+            row.addView(tvScore);
+            TextView tvTime = new TextView(this);
+            tvTime.setText(arrayTimeScores.get(i));
+            row.addView(tvTime);
+
+            tlRanking.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
         }
-        tvRanking.setText(scores);
+
     }
 
     public void orderArrays(ArrayList<String> arrayNames, ArrayList<Integer> arrayScores, ArrayList<Integer> arrayTimeScores){
