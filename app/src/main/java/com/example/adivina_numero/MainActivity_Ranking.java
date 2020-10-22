@@ -11,11 +11,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity_Ranking extends AppCompatActivity {
-    static ArrayList<String> arrayNames = new ArrayList<String>();
-    static ArrayList<Integer> arrayScores = new ArrayList<Integer>();
-    static ArrayList<Integer> arrayTimeScores = new ArrayList<Integer>();
+    static ArrayList<Match> arrayMatch = new ArrayList<Match>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,16 +24,13 @@ public class MainActivity_Ranking extends AppCompatActivity {
 
         String name = getIntent().getStringExtra("name");
         if(name.equals("") || name == null){
-            arrayNames.add("Unknown");
-        }else{
-            arrayNames.add(name);
+            name = "Unknown";
         }
+        int score = getIntent().getIntExtra("score", 0);
+        int time = getIntent().getIntExtra("timeScore", 0);
 
-        arrayScores.add(getIntent().getIntExtra("score", 0));
-
-        arrayTimeScores.add(getIntent().getIntExtra("timeScore", 0));
-
-        orderArrays(arrayNames, arrayScores, arrayTimeScores);
+        arrayMatch.add(new Match(name, score, time));
+        Collections.sort(arrayMatch);
 
         printRankingIntoTable(tlRanking);
 
@@ -69,27 +65,9 @@ public class MainActivity_Ranking extends AppCompatActivity {
     }
 
     public void printRankingIntoTable(TableLayout tlRanking){
-        for (int i = 0; i<arrayNames.size();i++){
-           addRowToTable(tlRanking, arrayNames.get(i), arrayScores.get(i), arrayTimeScores.get(i));
+        for (Match m : arrayMatch){
+           addRowToTable(tlRanking, m.getName(), m.getScore(), m.getTime());
         }
 
-    }
-
-    public void orderArrays(ArrayList<String> arrayNames, ArrayList<Integer> arrayScores, ArrayList<Integer> arrayTimeScores){
-        for(int i = arrayScores.size()-1; i>=1; i--){
-            for(int j = 0; j < i; j++){
-                if(arrayScores.get(j)>arrayScores.get(i)){
-                    int numChange = arrayScores.get(j);
-                    arrayScores.set(j, arrayScores.get(i));
-                    arrayScores.set(i, numChange);
-                    String nameChange = arrayNames.get(j);
-                    arrayNames.set(j, arrayNames.get(i));
-                    arrayNames.set(i, nameChange);
-                    int timeChange = arrayTimeScores.get(j);
-                    arrayTimeScores.set(j, arrayTimeScores.get(i));
-                    arrayTimeScores.set(i, timeChange);
-                }
-            }
-        }
     }
 }

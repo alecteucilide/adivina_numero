@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     String name = new String();
     int numAttempts = 0;
     int score = 0;
-    int secretNum = 0;
+    int secretNum = (int)((Math.random()*9)+1);
     int time = 0;
     int timeScore = 0;
     boolean playing = true;
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         score = numAttempts;
         timeScore = time;
         numAttempts = 0;
-        secretNum = (int)((Math.random()*1)+1);
+        secretNum = (int)((Math.random()*9)+1);
         time = 0;
     }
 
