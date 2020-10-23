@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     String name = new String();
     int numAttempts = 0;
     int score = 0;
-    int secretNum = (int)((Math.random()*99)+1);
+    int secretNum = (int)((Math.random()*1)+1);
     int time = 0;
     int timeScore = 0;
     boolean playing = true;
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         score = numAttempts;
         timeScore = time;
         numAttempts = 0;
-        secretNum = (int)((Math.random()*99)+1);
+        secretNum = (int)((Math.random()*1)+1);
         time = 0;
     }
 
@@ -104,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
     public void showDialogue(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-        alert.setTitle("Name dialogue");
-        alert.setMessage("Enter your name");
+        //alert.setTitle("Name dialogue");
+        alert.setMessage("Enter your name : ");
         final EditText input = new EditText(this);
         alert.setView(input);
 

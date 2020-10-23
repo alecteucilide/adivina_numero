@@ -1,6 +1,8 @@
 package com.example.adivina_numero;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,12 +17,16 @@ import java.util.Collections;
 
 public class MainActivity_Ranking extends AppCompatActivity {
     static ArrayList<Match> arrayMatch = new ArrayList<Match>();
-
+    RecyclerView rvRanking;
+    RecyclerAdapter recyclerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__ranking);
-        TableLayout tlRanking = (TableLayout) findViewById(R.id.tableRanking);
+        RecyclerView rvRanking = findViewById(R.id.rvRanking);
+        recyclerAdapter = new RecyclerAdapter(arrayMatch);
+        rvRanking.setLayoutManager(new LinearLayoutManager(this));
+        rvRanking.setAdapter(recyclerAdapter);
 
         String name = getIntent().getStringExtra("name");
         if(name.equals("") || name == null){
@@ -31,8 +37,6 @@ public class MainActivity_Ranking extends AppCompatActivity {
 
         arrayMatch.add(new Match(name, score, time));
         Collections.sort(arrayMatch);
-
-        printRankingIntoTable(tlRanking);
 
         final Button buttonReturn = findViewById(R.id.buttonReturn);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
