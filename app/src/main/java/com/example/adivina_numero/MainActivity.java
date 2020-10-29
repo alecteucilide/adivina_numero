@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
+/*onRsultActivty
+*
+* dos maneras de guardar en el disco duro -> perisintencia -> dcim o memoria interna de la app */
 public class MainActivity extends AppCompatActivity {
     String name = new String();
     int numAttempts = 0;
