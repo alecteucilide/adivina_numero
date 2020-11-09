@@ -4,13 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,12 +24,17 @@ public class MainActivity_Ranking extends AppCompatActivity {
     static ArrayList<Match> arrayMatch = new ArrayList<Match>();
     RecyclerView rvRanking;
     RecyclerAdapter recyclerAdapter;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    Bitmap imageBitmap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__ranking);
+        dispatchTakePictureIntent();
         RecyclerView rvRanking = findViewById(R.id.rvRanking);
-        recyclerAdapter = new RecyclerAdapter(arrayMatch);
+        recyclerAdapter = new RecyclerAdapter(arrayMatch, imageBitmap);
         rvRanking.setLayoutManager(new LinearLayoutManager(this));
         rvRanking.setAdapter(recyclerAdapter);
 
@@ -73,5 +83,26 @@ public class MainActivity_Ranking extends AppCompatActivity {
            addRowToTable(tlRanking, m.getName(), m.getScore(), m.getTime());
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+            //ivPhoto.setImageBitmap(imageBitmap);
+        }
+    }
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            // display error state to the user
+            Toast.makeText(MainActivity_Ranking.this, "No camera found.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

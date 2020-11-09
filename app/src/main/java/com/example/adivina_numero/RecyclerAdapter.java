@@ -1,8 +1,10 @@
 package com.example.adivina_numero;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,9 +14,11 @@ import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
     ArrayList<Match> arrayMatch = new ArrayList<Match>();
+    Bitmap photo;
 
-    public RecyclerAdapter(ArrayList<Match> arrayMatch) {
+    public RecyclerAdapter(ArrayList<Match> arrayMatch, Bitmap photo) {
         this.arrayMatch = arrayMatch;
+        this.photo = photo;
     }
 
     @NonNull
@@ -31,7 +35,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.tvName.setText(arrayMatch.get(position).getName());
         holder.tvScore.setText(String.valueOf(arrayMatch.get(position).getScore()));
         holder.tvTime.setText(String.valueOf(arrayMatch.get(position).getTime()));
-        holder.tvRanking.setText(String.valueOf(position+1));
+        holder.ivPhoto.setImageBitmap(photo);
     }
 
     @Override
@@ -40,13 +44,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        TextView tvName, tvScore, tvTime, tvRanking;
+        TextView tvName, tvScore, tvTime;
+        ImageView ivPhoto;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             tvScore = itemView.findViewById(R.id.tvScore);
             tvTime = itemView.findViewById(R.id.tvTime);
-            tvRanking = itemView.findViewById(R.id.tvRankingCol);
+            ivPhoto = itemView.findViewById(R.id.ivPhoto);
         }
     }
 }
