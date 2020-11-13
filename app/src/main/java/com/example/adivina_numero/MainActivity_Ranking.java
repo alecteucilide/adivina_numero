@@ -50,8 +50,9 @@ public class MainActivity_Ranking extends AppCompatActivity {
         }
         int score = getIntent().getIntExtra("score", 0);
         int time = getIntent().getIntExtra("timeScore", 0);
+        String photoPath = getIntent().getStringExtra("photoPath");
 
-        arrayMatch.add(new Match(name, score, time));
+        arrayMatch.add(new Match(name, score, time, photoPath));
         Collections.sort(arrayMatch);
 
         saveMatchs();
@@ -113,12 +114,14 @@ public class MainActivity_Ranking extends AppCompatActivity {
                 String name;
                 int score;
                 int time;
+                String photoPath;
                 if(nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     name = eElement.getElementsByTagName("name").item(0).getTextContent();
                     score = Integer.parseInt(eElement.getElementsByTagName("score").item(0).getTextContent());
                     time = Integer.parseInt(eElement.getElementsByTagName("time").item(0).getTextContent());
-                    Match m = new Match(name, score, time);
+                    photoPath = eElement.getElementsByTagName("photoPath").item(0).getTextContent();
+                    Match m = new Match(name, score, time, photoPath);
                     arrayMatch.add(m);
                 }
             }
@@ -156,8 +159,11 @@ public class MainActivity_Ranking extends AppCompatActivity {
 
                 Element eTime = doc.createElement("time");
                 eTime.appendChild(doc.createTextNode(String.valueOf(m.getTime())));
-                eMatch.appendChild(eTime
-                );
+                eMatch.appendChild(eTime);
+
+                Element ePhotoPath = doc.createElement("photoPath");
+                ePhotoPath.appendChild(doc.createTextNode(m.getPhotoPath()));
+                eMatch.appendChild(ePhotoPath);
             }
 
             // clases necesarias finalizar la creación del archivo XML

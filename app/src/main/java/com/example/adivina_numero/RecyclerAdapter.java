@@ -31,7 +31,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.tvName.setText(arrayMatch.get(position).getName());
         holder.tvScore.setText(String.valueOf(arrayMatch.get(position).getScore()));
         holder.tvTime.setText(String.valueOf(arrayMatch.get(position).getTime()));
-        holder.tvRanking.setText(String.valueOf(position+1));
+        holder.tvPhotoPath.setText(arrayMatch.get(position).getPhotoPath());
     }
 
     @Override
@@ -40,13 +40,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        TextView tvName, tvScore, tvTime, tvRanking;
+        TextView tvName, tvScore, tvTime, tvPhotoPath;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             tvScore = itemView.findViewById(R.id.tvScore);
             tvTime = itemView.findViewById(R.id.tvTime);
-            tvRanking = itemView.findViewById(R.id.tvRankingCol);
+            tvPhotoPath = itemView.findViewById(R.id.tvPhotoPath);
         }
     }
 }

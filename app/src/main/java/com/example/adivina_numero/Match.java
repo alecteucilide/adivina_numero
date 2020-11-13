@@ -4,11 +4,13 @@ public class Match implements Comparable<Match>{
     private String name;
     private int score;
     private int time;
+    private String photoPath;
 
-    public Match(String name, int score, int time){
+    public Match(String name, int score, int time, String photoPath){
         this.name = name;
         this.score = score;
         this.time = time;
+        this.photoPath = photoPath;
     }
 
     public String getName() {
@@ -34,6 +36,15 @@ public class Match implements Comparable<Match>{
     public void setTime(int time) {
         this.time = time;
     }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = getPhotoPath();
+    }
+
 
     @Override
     public int compareTo(Match m) {

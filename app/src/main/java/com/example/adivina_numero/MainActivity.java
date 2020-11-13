@@ -1,16 +1,24 @@
 package com.example.adivina_numero;
 //hacer u realease v0.1 con tag = vo.1 -> en github
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 /*onRsultActivty
@@ -24,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     int time = 0;
     int timeScore = 0;
     boolean playing = true;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    String currentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +55,15 @@ public class MainActivity extends AppCompatActivity {
                     numAttempts++;
                     if(enteredNumInt<secretNum){
                         Toast.makeText(MainActivity.this, "The sercret number is bigger.", Toast.LENGTH_SHORT).show();
+                        enteredNum.setText("");
                     }else if(enteredNumInt>secretNum) {
                         Toast.makeText(MainActivity.this, "The secret number is smaller.", Toast.LENGTH_SHORT).show();
+                        enteredNum.setText("");
                     }else{
                         Toast.makeText(MainActivity.this, "You have found the secret number in "+numAttempts+" attempts.", Toast.LENGTH_SHORT).show();
                         restartGame();
                         showDialogue();
+                        dispatchTakePictureIntent();
                         playing = false;
                     }
                 }catch (Exception e){
@@ -65,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(score > 0){
                     if(playing==false){
-                            callRanking();
+                        callRanking();
                     }else{
                         Toast.makeText(MainActivity.this, "End current game before accessing ranking.", Toast.LENGTH_SHORT).show();
                     }
@@ -89,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("name", name);
         intent.putExtra("score", score);
         intent.putExtra("timeScore", timeScore);
+        intent.putExtra("photoPath", currentPhotoPath);
         startActivity(intent);
     }
 
@@ -127,5 +141,40 @@ public class MainActivity extends AppCompatActivity {
         });
 
         alert.show();
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 }
