@@ -16,6 +16,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.xml.parsers.DocumentBuilder;
@@ -33,6 +34,11 @@ public class MainActivity_Ranking extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__ranking);
+
+        createFile();
+
+        readMatchs();
+
         RecyclerView rvRanking = findViewById(R.id.rvRanking);
         recyclerAdapter = new RecyclerAdapter(arrayMatch);
         rvRanking.setLayoutManager(new LinearLayoutManager(this));
@@ -48,6 +54,8 @@ public class MainActivity_Ranking extends AppCompatActivity {
         arrayMatch.add(new Match(name, score, time));
         Collections.sort(arrayMatch);
 
+        saveMatchs();
+
         final Button buttonReturn = findViewById(R.id.buttonReturn);
         buttonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,11 +69,36 @@ public class MainActivity_Ranking extends AppCompatActivity {
     public void createFile(){
         File path = getFilesDir();
         File file = new File(path.getPath()+"/matchs.xml");
+
+        if(!file.exists()){
+            try {
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                DocumentBuilder db = dbf.newDocumentBuilder();
+                Document doc = db.newDocument();
+
+                // definimos el elemento raíz del documento
+                Element eRaiz = doc.createElement("matchs");
+                doc.appendChild(eRaiz);
+
+                // clases necesarias finalizar la creación del archivo XML
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                DOMSource source = new DOMSource(doc);
+                StreamResult result = new StreamResult(new File(String.valueOf(file)));
+
+                transformer.transform(source, result);
+            } catch(Exception e) {
+                e.printStackTrace();
+                System.out.println("Exception while executing createFile()");
+            }
+        }
     }
 
     public void readMatchs() {
         File path = getFilesDir();
         File file = new File(path.getPath()+"/matchs.xml");
+        System.out.println(String.valueOf(String.valueOf(file.getAbsolutePath())));
+
         arrayMatch.clear();
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -92,10 +125,14 @@ public class MainActivity_Ranking extends AppCompatActivity {
 
         } catch(Exception e) {
             e.printStackTrace();
+            System.out.println("Exception while executing readMatchs()");
         }
     }
 
-    public void saveMatchs(ArrayList<Match> arrayMatch){
+    public void saveMatchs(){
+        File path = getFilesDir();
+        File file = new File(path.getPath()+"/matchs.xml");
+        file.delete();
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -127,11 +164,12 @@ public class MainActivity_Ranking extends AppCompatActivity {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("matchs.xml"));
+            StreamResult result = new StreamResult(new File(String.valueOf(file)));
 
             transformer.transform(source, result);
         } catch(Exception e) {
             e.printStackTrace();
+            System.out.println("Exception while executing saveMatchs()");
         }
     }
 
@@ -160,6 +198,5 @@ public class MainActivity_Ranking extends AppCompatActivity {
         for (Match m : arrayMatch){
            addRowToTable(tlRanking, m.getName(), m.getScore(), m.getTime());
         }
-
     }
 }
