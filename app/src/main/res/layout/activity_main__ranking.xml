@@ -18,11 +18,11 @@
         app:layout_constraintVertical_bias="0.127">
 
         <TextView
-            android:id="@+id/tvRankingCol"
+            android:id="@+id/tvPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ranking" />
+            android:text="Photo" />
 
         <TextView
             android:id="@+id/tvNameColTitle"
@@ -41,16 +41,16 @@
         <TextView
             android:id="@+id/tvTimeColTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Time" />
+            android:text="Time (s)" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tvRankingTitle"
         android:layout_width="72dp"
         android:layout_height="26dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:text="Ranking"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -61,22 +61,21 @@
         android:id="@+id/buttonReturn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="232dp"
+        android:layout_marginBottom="228dp"
         android:text="Return"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.467"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRanking"
-        android:layout_width="336dp"
-        android:layout_height="106dp"
+        android:layout_width="335dp"
+        android:layout_height="183dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.174" />
+        app:layout_constraintVertical_bias="0.233" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
