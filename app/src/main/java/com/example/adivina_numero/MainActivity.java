@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     String name = new String();
     int numAttempts = 0;
     int score = 0;
-    int secretNum = (int)((Math.random()*1)+1);
+    int secretNum = (int)((Math.random()*100)+1);
     int time = 0;
     int timeScore = 0;
     boolean playing = true;
@@ -93,10 +93,13 @@ public class MainActivity extends AppCompatActivity {
         score = numAttempts;
         timeScore = time;
         numAttempts = 0;
-        secretNum = (int)((Math.random()*1)+1);
+        secretNum = (int)((Math.random()*100)+1);
         time = 0;
     }
 
+    /**
+     * Metodo para generar un intent y pasar los datos de la pratida a la nueva activity generada.
+     */
     public void callRanking(){
         Intent intent = new Intent(this, MainActivity_Ranking.class);
         intent.putExtra("name", name);
@@ -106,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Metodo para crear un "chronometro".
+     */
     public void creatTimer(){
         Timer t = new Timer();
         TimerTask tt = new TimerTask() {
@@ -117,14 +123,15 @@ public class MainActivity extends AppCompatActivity {
         t.schedule(tt, 0, 1000);
     }
 
+    /**
+     * Metodo para permitir entrar al ususario su nombre al acabar la partida.
+     * Verifica que el nombre entrado no sea nulo.
+     */
     public void showDialogue(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        //alert.setTitle("Name dialogue");
         alert.setMessage("Enter your name : ");
         final EditText input = new EditText(this);
         alert.setView(input);
-
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 name = input.getText().toString();
@@ -143,6 +150,9 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+    /**
+     * Metodo que permite generar un intent para tomar una foto y guardarla.
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -163,6 +173,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metodo que permite generar un objeto file asociado a la imagen por dispatchTakePictureIntent().
+     * @return File image
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

@@ -55,6 +55,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
     }
 
+    /**
+     * Metodo para crear un Btimap segun la direccion donde se guardo la foto de una partida.
+     * @param matchIndex : index de la partida en el arrayMatch
+     * @return Bitmap
+     */
     public Bitmap getPhotoBitmap(int matchIndex){
         File fPhotoPath = new File(arrayMatch.get(matchIndex).getPhotoPath());
         Bitmap photoBitmap = BitmapFactory.decodeFile(fPhotoPath.getAbsolutePath());

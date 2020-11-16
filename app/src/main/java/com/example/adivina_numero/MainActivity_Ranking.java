@@ -30,6 +30,16 @@ public class MainActivity_Ranking extends AppCompatActivity {
     static ArrayList<Match> arrayMatch = new ArrayList<Match>();
     RecyclerView rvRanking;
     RecyclerAdapter recyclerAdapter;
+
+    /**
+     * Estrategia de flujo de datos en MainActivity_Ranking
+     *
+     * Al iniciar la activity se crea un xml (matchs.xml) para guardar los datos si no existe. Se borra el contenido
+     * del arrayMatch y se leen y guardan los datos de matchs.xml en ese array. Se recuperan los datos del MainActivity
+     * atraves del intent con los cuales se crea una instancia de Match que se guarda en arrayMatch. Se ordena arrayMatch
+     * segun el score y time. Se destruye matchs.xml y se vuelve a crear un xml con el mismo nombre guardando la informacion
+     * de todos los objetos contenidos en arrayMatch.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +77,9 @@ public class MainActivity_Ranking extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo para crear una "base de datos" vacia cuando la applicaion se ejecuta por primera vez.
+     */
     public void createFile(){
         File path = getFilesDir();
         File file = new File(path.getPath()+"/matchs.xml");
@@ -95,6 +108,9 @@ public class MainActivity_Ranking extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metodo para guardar todas las partidas (Match) guardadas en matchs.xml en el array arrayMatch.
+     */
     public void readMatchs() {
         File path = getFilesDir();
         File file = new File(path.getPath()+"/matchs.xml");
@@ -132,6 +148,9 @@ public class MainActivity_Ranking extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metodo para guardar las partidas (Match) del arrayMatch en matchs.xml
+     */
     public void saveMatchs(){
         File path = getFilesDir();
         File file = new File(path.getPath()+"/matchs.xml");
@@ -179,30 +198,11 @@ public class MainActivity_Ranking extends AppCompatActivity {
         }
     }
 
-
-    public void addRowToTable(TableLayout tlRanking, String name, Integer score, Integer time){
-        TableRow tr = new TableRow(this);
-        tr.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-        TextView tvName = new TextView(this);
-        tvName.setText(name);
-        tr.addView(tvName);
-        TextView tvScore = new TextView(this);
-        tvScore.setText(String.valueOf(score));
-        tr.addView(tvScore);
-        TextView tvTime = new TextView(this);
-        tvTime.setText(String.valueOf(time));
-        tr.addView(tvTime);
-        tlRanking.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-    }
-
+    /**
+     * Metodo para regresar a la pagina de juego (MainActivity) desde la pagina ranking (esta activity)
+     */
     public void callMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-    }
-
-    public void printRankingIntoTable(TableLayout tlRanking){
-        for (Match m : arrayMatch){
-           addRowToTable(tlRanking, m.getName(), m.getScore(), m.getTime());
-        }
     }
 }
